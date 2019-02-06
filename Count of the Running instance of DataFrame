@@ -1,0 +1,46 @@
+
+
+###########  Code Sample ###########
+import pandas as pd
+import numpy as np
+
+df = pd.DataFrame({'data':['A','C','C','B','B','A','A','A','C','C','C','D','D','E','D']})
+df['count'] = df['data'].ne(df['data'].shift().bfill()).astype(int).cumsum()
+print("Dataframe after difference/count:\n",df)
+grouped1 = df.groupby(['count']).sum()
+grouped2 = df.groupby(['count']).count()
+grouped = pd.concat([grouped1,grouped2],axis=1)
+print("Dataframe with Running instances count:\n",grouped)
+
+
+########## output ###################
+
+Dataframe after difference/count:
+    data  count
+0     A      0
+1     C      1
+2     C      1
+3     B      2
+4     B      2
+5     A      3
+6     A      3
+7     A      3
+8     C      4
+9     C      4
+10    C      4
+11    D      5
+12    D      5
+13    E      6
+14    D      7
+
+Dataframe with Running instances count:
+        data  data
+count            
+0         A     1
+1        CC     2
+2        BB     2
+3       AAA     3
+4       CCC     3
+5        DD     2
+6         E     1
+7         D     1
